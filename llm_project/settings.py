@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-(f#-f_ak7))o2s8(da)&&lwy3nuy(d2ph8l6%knc=$na80@-oc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'my-llm.actechworld.com',  # Add your domain
+    '127.0.0.1',               # Localhost for testing
+    'localhost',               # Localhost alias
+]
 
 
 # Application definition
