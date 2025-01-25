@@ -18,3 +18,7 @@ def query_llm(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+def hello_world(request):
+    return JsonResponse({'message': 'Hello, World!'})
