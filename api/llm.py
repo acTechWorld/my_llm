@@ -1,26 +1,10 @@
 
-
-import transformers
-import torch
-
-# Initialize the Hugging Face pipeline for LLaMA-3.1
-model_id = "meta-llama/Meta-Llama-3.1-8B-Instruct"
-
-# Create a text-generation pipeline with the LLaMA model
-pipeline = transformers.pipeline(
-    "text-generation",
-    model=model_id,
-    model_kwargs={"torch_dtype": torch.bfloat16},
-    device_map="auto",  # Automatically selects GPU if available
-)
+from llama_cpp import Llama
+# Initialize the Llama instance
+llm = Llama(model_path='/Users/antoinecanard/Projects/Python/my_llm/models/Meta-Llama-3.1-8B-Instruct-Q4_K_L.gguf')
 
 def generate_response(prompt):
-    # Use the pipeline to generate the response from LLaMA-3.1
-    outputs = pipeline(
-        [prompt],  # We pass the joined input text from all messages
-        max_new_tokens=256,  # Limit the response length
-    )
-
-    # Return the generated text
-    return outputs[0]["generated_text"]
+    # Generate a response from the model
+    output = llm(prompt, max_tokens=150)
+    return output["choices"][0]["text"]
 
