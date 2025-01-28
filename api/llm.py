@@ -1,7 +1,11 @@
 
 from llama_cpp import Llama
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 # Initialize the Llama instance
-llm = Llama(model_path='/Users/antoinecanard/Projects/Python/my_llm/models/Meta-Llama-3.1-8B-Instruct-Q4_K_L.gguf')
+llm = Llama(model_path= os.getenv('BASED_URL_MODEL'))
 
 def generate_response(prompt):
     # Generate a response from the model
