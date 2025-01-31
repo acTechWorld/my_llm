@@ -1,14 +1,14 @@
-
-from llama_cpp import Llama
 from dotenv import load_dotenv
 import os
-
+from gpt4all import GPT4All
+# Load environment variables
 load_dotenv()
-# Initialize the Llama instance
-llm = Llama(model_path= os.getenv('BASED_URL_MODEL'))
 
+# Get the GGUF model path from .env
+model_path = os.getenv("MODEL_PATH")  # Update your .env file with MODEL_PATH
+
+llm = GPT4All(model_path)
+
+# Function to generate responses
 def generate_response(prompt):
-    # Generate a response from the model
-    output = llm(prompt, max_tokens=150)
-    return output["choices"][0]["text"]
-
+    return llm.generate(prompt, max_tokens=150)
