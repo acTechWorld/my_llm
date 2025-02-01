@@ -1,9 +1,16 @@
-from llama_cpp import Llama
+from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+import torch
+model_name = "EleutherAI/gpt-neo-1.3B"  # Or use "EleutherAI/gpt-j-6B" for the larger model
+model = GPTNeoForCausalLM.from_pretrained(model_name)
+tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-1.3B")
 
-# Initialize the LLaMA model
-llama = Llama(model_path="/Users/antoinecanard/Projects/Python/my_llm/models/test/Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf")
 
+# Set the device to 'cpu' or use the 'mps' device without BFloat16
+device = torch.device("cpu")  # Or use "mps" with the appropriate settings
+model = model.to(device)
+# Alternatively, avoid BFloat16 if the issue is specifically related to that precision
+model = model.half()
 def generate_response(prompt):
-    response = llama.generate(prompt)
-    print(response)
-    return response
+    inputs = tokenizer(prompt, return_tensors="pt")
+    outputs = model.generate(inputs["input_ids"], max_length=150, num_return_sequences=1)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
