@@ -1,15 +1,11 @@
-from transformers import LlamaForCausalLM, LlamaTokenizer
+from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+model_name = "EleutherAI/gpt-neo-1.3B"  # Or use "EleutherAI/gpt-j-6B" for the larger model
+model = GPTNeoForCausalLM.from_pretrained(model_name)
+tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-1.3B")
 
-# Specify the exact model name (replace "meta-llama/Llama-8B" with the actual model name from Hugging Face)
-model_name = "neuralmagic/Meta-Llama-3.1-8B-Instruct-quantized.w4a16"  # Replace this with the correct model name, if available
-model = LlamaForCausalLM.from_pretrained(model_name)
-tokenizer = LlamaTokenizer.from_pretrained(model_name)
-
-
-# Optionally, switch to half precision (float16) if using a compatible GPU
-# model = model.half()  # Uncomment this if you want to use half precision (float16)
-
+# Alternatively, avoid BFloat16 if the issue is specifically related to that precision
+model = model.half()
 def generate_response(prompt):
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)  # Ensure inputs are on the same device as the model
+    inputs = tokenizer(prompt, return_tensors="pt")
     outputs = model.generate(inputs["input_ids"], max_length=150, num_return_sequences=1)
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
